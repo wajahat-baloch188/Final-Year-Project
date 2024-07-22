@@ -20,5 +20,14 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+
+	<!-- opencamera -->
+	<key>NSCameraUsageDescription</key>
+<string>Your message to the user when the camera is accessed.</string>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>Your message to the user when the photo library is accessed.</string>
+<key>NSPhotoLibraryAddUsageDescription</key>
+<string>Your message to the user when the photo library is accessed.</string>
+
 </dict>
 </plist>

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "483084569239",
+    "project_id": "breast-cancer-detection-53741",
+    "storage_bucket": "breast-cancer-detection-53741.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:483084569239:android:e1ef51652c81e02c9577d2",
+        "android_client_info": {
+          "package_name": "com.breastcancerdetection"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "483084569239-65olhpi8rbqp77pdn7804k999339s5b8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.breastcancerdetection",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "483084569239-bi2cr163n1i84pp72g41oub3f0j58pq6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKIHB4ZO8fnh7uCQReIQt9KDBUAVlgrqU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "483084569239-bi2cr163n1i84pp72g41oub3f0j58pq6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
