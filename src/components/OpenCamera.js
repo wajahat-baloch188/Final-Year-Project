@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -9,10 +9,14 @@ import {
   PermissionsAndroid,
   Platform,
 } from 'react-native';
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
-const OpenCamera = () => {
+const OpenCamera = ({updateImages}) => {
   const [images, setImages] = useState([]);
+
+  useEffect(() => {
+    updateImages(images); 
+  }, [images]);
 
   const requestCameraPermission = async () => {
     if (Platform.OS === 'android') {
@@ -40,7 +44,7 @@ const OpenCamera = () => {
 
   const handleCamera = async () => {
     await requestCameraPermission();
-    const result = await launchCamera({ mediaType: 'photo', quality: 1 });
+    const result = await launchCamera({mediaType: 'photo', quality: 1});
     if (result.assets) {
       setImages(prevImages => [...prevImages, ...result.assets]);
     }
@@ -65,7 +69,7 @@ const OpenCamera = () => {
             key={index}
             resizeMode="contain"
             style={styles.img}
-            source={{ uri: image.uri }}
+            source={{uri: image.uri}}
           />
         ))}
       </View>
@@ -91,7 +95,7 @@ const styles = StyleSheet.create({
   imgBox: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'center', // Center images horizontally
+    justifyContent: 'center',
   },
   img: {
     width: 150,

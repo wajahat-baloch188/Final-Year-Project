@@ -5,7 +5,8 @@ import SignUp from './src/screens/SignUp';
 import SignIn from './src/screens/SignIn';
 import ForgetPassword from './src/screens/ForgetPassword';
 import Home from './src/screens/Home';
-import BootSplash from "react-native-bootsplash";
+import BootSplash from 'react-native-bootsplash';
+import Result from './src/screens/Result';
 const Stack = createStackNavigator();
 
 const App = () => {
@@ -15,8 +16,8 @@ const App = () => {
     };
 
     init().finally(async () => {
-      await BootSplash.hide({ fade: true });
-      console.log("BootSplash has been hidden successfully");
+      await BootSplash.hide({fade: true});
+      console.log('BootSplash has been hidden successfully');
     });
   }, []);
   return (
@@ -41,6 +42,11 @@ const App = () => {
           name="ForgetPassword"
           options={{headerShown: false}}
           component={ForgetPassword}
+        />
+        <Stack.Screen
+          name="Result"
+          options={{headerShown: false}}
+          component={Result}
         />
       </Stack.Navigator>
     </NavigationContainer>
