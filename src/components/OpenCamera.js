@@ -15,7 +15,7 @@ const OpenCamera = ({updateImages}) => {
   const [images, setImages] = useState([]);
 
   useEffect(() => {
-    updateImages(images); 
+    updateImages(images);
   }, [images]);
 
   const requestCameraPermission = async () => {
@@ -61,16 +61,27 @@ const OpenCamera = ({updateImages}) => {
     }
   };
 
+  const handleDeleteImage = index => {
+    setImages(images.filter((_, i) => i !== index));
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.imgBox}>
         {images.map((image, index) => (
-          <Image
-            key={index}
-            resizeMode="contain"
-            style={styles.img}
-            source={{uri: image.uri}}
-          />
+          <View key={index} style={styles.imageContainer}>
+            <Image
+              resizeMode="contain"
+              style={styles.img}
+              source={{uri: image.uri}}
+            />
+            <TouchableOpacity
+              style={styles.deleteIcon}
+              onPress={() => handleDeleteImage(index)}>
+              {/* <Icon name="close" size={20} color="#FB2A84" /> */}
+              <Text color="#000">X</Text>
+            </TouchableOpacity>
+          </View>
         ))}
       </View>
       <View style={styles.buttonContainer}>
@@ -97,12 +108,24 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'center',
   },
+  imageContainer: {
+    position: 'relative',
+    margin: 5, // Space between images
+  },
   img: {
     width: 150,
     height: 150,
-    margin: 5, // Space between images
     borderWidth: 1,
     borderColor: '#ccc', // Border color
+  },
+  deleteIcon: {
+    position: 'absolute',
+    top: -5,
+    right: -5,
+    backgroundColor: '#010101',
+    borderRadius: 50,
+    paddingHorizontal:10,
+    paddingVertical:5,
   },
   buttonContainer: {
     alignItems: 'center',
