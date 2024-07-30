@@ -75,11 +75,12 @@ const OpenCamera = ({updateImages}) => {
               style={styles.img}
               source={{uri: image.uri}}
             />
+
             <TouchableOpacity
               style={styles.deleteIcon}
               onPress={() => handleDeleteImage(index)}>
+              <Text style={styles.deleteIconText}>✖</Text>
               {/* <Icon name="close" size={20} color="#FB2A84" /> */}
-              <Text color="#000">X</Text>
             </TouchableOpacity>
           </View>
         ))}
@@ -100,8 +101,10 @@ export default OpenCamera;
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     padding: 10,
     alignItems: 'center',
+    justifyContent: 'center', // Center contents vertically
   },
   imgBox: {
     flexDirection: 'row',
@@ -120,16 +123,28 @@ const styles = StyleSheet.create({
   },
   deleteIcon: {
     position: 'absolute',
+    height: 30,
+    width: 30,
     top: -5,
+    fontSize: 6,
     right: -5,
+
     backgroundColor: '#010101',
     borderRadius: 50,
-    paddingHorizontal:10,
-    paddingVertical:5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  deleteIconText: {
+    color: '#FFFFFF',
+    fontSize: 10,
+   
+    fontWeight: 'bold',
   },
   buttonContainer: {
     alignItems: 'center',
-    marginTop: 10, // Space above buttons
+    justifyContent: 'center', // Center buttons vertically
+    marginTop: 10,
+    marginBottom: 90,
   },
   btn: {
     justifyContent: 'center',
@@ -137,11 +152,14 @@ const styles = StyleSheet.create({
     width: 150,
     height: 40,
     borderRadius: 10,
-    borderColor: '#FB2A84',
+    backgroundColor: '#FB2A84',
     borderWidth: 1,
     marginBottom: 10,
+    borderColor: '#FFFFFF',
   },
   textBtn: {
-    color: 'black',
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });

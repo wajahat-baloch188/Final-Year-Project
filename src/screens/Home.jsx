@@ -66,22 +66,29 @@
 
 // export default Home;
 
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
+import React, {useState} from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Alert,
+  ScrollView,
+} from 'react-native';
 import OpenCamera from '../components/OpenCamera';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 const Home = () => {
   const [images, setImages] = useState([]);
   const navigation = useNavigation();
 
-  const handleUpdateImages = (newImages) => {
+  const handleUpdateImages = newImages => {
     setImages(newImages); // Update the state with the new images array
   };
 
   const handleCheckPress = () => {
     if (images.length > 0) {
-      navigation.navigate('Result', { images });
+      navigation.navigate('Result', {images});
     } else {
       Alert.alert('No Images Selected', 'Please select images');
     }
@@ -92,10 +99,14 @@ const Home = () => {
       <View style={styles.header}>
         <Text style={styles.headerText}>Home</Text>
       </View>
-      <OpenCamera updateImages={handleUpdateImages} />
+      <ScrollView>
+        <OpenCamera updateImages={handleUpdateImages} />
+      </ScrollView>
 
-      <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-        <TouchableOpacity style={styles.bottomButton} onPress={handleCheckPress}>
+      <View style={{justifyContent: 'center', alignItems: 'center'}}>
+        <TouchableOpacity
+          style={styles.bottomButton}
+          onPress={handleCheckPress}>
           <Text style={styles.buttonText}>Check</Text>
         </TouchableOpacity>
       </View>
