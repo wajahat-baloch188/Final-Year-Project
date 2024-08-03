@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Image,
   Alert,
+  ActivityIndicator, // Import ActivityIndicator
 } from 'react-native';
 import { ArrowRight } from 'lucide-react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -19,20 +20,21 @@ const SignUp = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false); // State to manage loading
 
-  // Configure Google Sign-In on component mount
   useEffect(() => {
     GoogleSignin.configure({
       webClientId: '483084569239-bi2cr163n1i84pp72g41oub3f0j58pq6.apps.googleusercontent.com',
     });
   }, []);
 
-  // Create a new user with email and password
   const createUser = () => {
     if (!name || !email || !password) {
       Alert.alert('Error', 'Please fill in all fields');
       return;
     }
+
+    setLoading(true); // Start loading
 
     auth()
       .createUserWithEmailAndPassword(email, password)
@@ -43,28 +45,19 @@ const SignUp = () => {
           email: email,
           fullName: name,
         };
-        firestore()
-          .collection('users')
-          .doc(uid)
-          .set(userData)
-          .then(() => {
-            Alert.alert('Success', 'Account created successfully', [
-              {
-                text: 'OK',
-                onPress: () => navigation.navigate('SignIn'),
-              },
-            ]);
-          })
-          .catch(error => {
-            Alert.alert('Error', `Failed to save user data: ${error.message}`);
-          });
+        return firestore().collection('users').doc(uid).set(userData);
+      })
+      .then(() => {
+        navigation.navigate('Home'); // Navigate to Home directly
       })
       .catch(error => {
         Alert.alert('Error', `Failed to create account: ${error.message}`);
+      })
+      .finally(() => {
+        setLoading(false); // Stop loading
       });
   };
 
-  // Handle Google Sign-In
   const googleSignUp = async () => {
     try {
       await GoogleSignin.hasPlayServices();
@@ -81,12 +74,7 @@ const SignUp = () => {
 
       await firestore().collection('users').doc(uid).set(userData);
 
-      Alert.alert('Success', 'Signed in with Google successfully', [
-        {
-          text: 'OK',
-          onPress: () => navigation.navigate('Home'),
-        },
-      ]);
+      navigation.navigate('Home'); // Navigate to Home directly
 
     } catch (error) {
       switch (error.code) {
@@ -159,20 +147,31 @@ const SignUp = () => {
               onChangeText={setPassword}
             />
           </View>
-          <TouchableOpacity style={styles.button} onPress={createUser}>
-            <Text style={styles.buttonText}>Create Account</Text>
-            <ArrowRight style={styles.arrowIcon} size={16} />
+          <TouchableOpacity
+            style={styles.button}
+            onPress={createUser}
+            disabled={loading} // Disable button while loading
+          >
+            {loading ? (
+              <ActivityIndicator size="small" color="#fff" /> // Show loading indicator
+            ) : (
+              <>
+                <Text style={styles.buttonText}>Create Account</Text>
+                <ArrowRight style={styles.arrowIcon} size={16} />
+              </>
+            )}
           </TouchableOpacity>
         </View>
         <View style={styles.socialLoginContainer}>
           <TouchableOpacity style={styles.socialButton} onPress={googleSignUp}>
             <Image
-              source={{ uri: 'https://th.bing.com/th/id/OIP.HgH-NjiOdFOrkmwjsZCCfAHaHl?rs=1&pid=ImgDetMain' }}
+              source={{
+                uri: 'https://th.bing.com/th/id/OIP.HgH-NjiOdFOrkmwjsZCCfAHaHl?rs=1&pid=ImgDetMain',
+              }}
               style={styles.socialIcon}
             />
             <Text style={styles.socialButtonText}>Sign up with Google</Text>
           </TouchableOpacity>
-         
         </View>
       </View>
     </View>

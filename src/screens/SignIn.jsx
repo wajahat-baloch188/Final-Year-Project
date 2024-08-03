@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Image,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import {ArrowRight} from 'lucide-react-native';
 import {useNavigation} from '@react-navigation/native';
@@ -21,8 +22,21 @@ const SignIn = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [errorVisible, setErrorVisible] = useState(false);
 
   const signIn = () => {
+    if (!email || !password) {
+      setError('Please write email and password');
+      setErrorVisible(true);
+      setTimeout(() => {
+        setErrorVisible(false);
+      }, 5000); // Hide the error message after 5 seconds
+      return;
+    }
+
+    setLoading(true);
     auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => {
@@ -30,6 +44,9 @@ const SignIn = () => {
       })
       .catch(error => {
         Alert.alert('Error', error.message);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -117,9 +134,20 @@ const SignIn = () => {
             />
           </View>
 
-          <TouchableOpacity style={styles.button} onPress={signIn}>
-            <Text style={styles.buttonText}>Sign In</Text>
-            <ArrowRight style={styles.arrowIcon} size={16} />
+          {errorVisible && <Text style={styles.errorText}>{error}</Text>}
+
+          <TouchableOpacity
+            style={styles.button}
+            onPress={signIn}
+            disabled={loading}>
+            {loading ? (
+              <ActivityIndicator size="small" color="#fff" />
+            ) : (
+              <>
+                <Text style={styles.buttonText}>Sign In</Text>
+                <ArrowRight style={styles.arrowIcon} size={16} />
+              </>
+            )}
           </TouchableOpacity>
         </View>
 
@@ -255,6 +283,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#1f2937',
     fontWeight: 'bold',
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 14,
+    marginBottom: 8,
+    textAlign: 'center',
   },
 });
 
