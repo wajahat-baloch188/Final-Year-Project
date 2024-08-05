@@ -1,3 +1,6 @@
+import firebase from '@react-native-firebase/app';
+// Import other Firebase services if needed
+import '@react-native-firebase/storage';
 import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -21,6 +24,15 @@ const App = () => {
       console.log('BootSplash has been hidden successfully');
     });
   }, []);
+
+
+// Initialize Firebase app
+if (!firebase.apps.length) {
+  firebase.initializeApp({
+    // Your Firebase config
+  });
+}
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="SignIn">
