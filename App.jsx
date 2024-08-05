@@ -7,6 +7,7 @@ import ForgetPassword from './src/screens/ForgetPassword';
 import Home from './src/screens/Home';
 import BootSplash from 'react-native-bootsplash';
 import Result from './src/screens/Result';
+import Account from './src/screens/Account';
 const Stack = createStackNavigator();
 
 const App = () => {
@@ -32,6 +33,11 @@ const App = () => {
           name="Home"
           options={{headerShown: false}}
           component={Home}
+        />
+        <Stack.Screen
+          name="Account"
+          options={{headerShown: false}}
+          component={Account}
         />
         <Stack.Screen
           name="SignUp"

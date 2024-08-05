@@ -1,0 +1,229 @@
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (mmap) failed to map 130023424 bytes for G1 virtual space
+# Possible reasons:
+#   The system is out of physical RAM or swap space
+#   The process is running with CompressedOops enabled, and the Java Heap may be blocking the growth of the native heap
+# Possible solutions:
+#   Reduce memory load on the system
+#   Increase physical memory or swap space
+#   Check if swap backing store is full
+#   Decrease Java heap size (-Xmx/-Xms)
+#   Decrease number of Java threads
+#   Decrease Java thread stack sizes (-Xss)
+#   Set larger code cache with -XX:ReservedCodeCacheSize=
+#   JVM is running with Unscaled Compressed Oops mode in which the Java heap is
+#     placed in the first 4GB address space. The Java Heap base address is the
+#     maximum limit for the native heap growth. Please use -XX:HeapBaseMinAddress
+#     to set the Java Heap base and to place the Java Heap above 4GB virtual address.
+# This output file may be truncated or incomplete.
+#
+#  Out of Memory Error (os_windows.cpp:3613), pid=6380, tid=14032
+#
+# JRE version:  (17.0.10+7) (build )
+# Java VM: OpenJDK 64-Bit Server VM (17.0.10+7-adhoc..jdk17u, mixed mode, sharing, tiered, compressed oops, compressed class ptrs, g1 gc, windows-amd64)
+# No core dump will be written. Minidumps are not enabled by default on client versions of Windows
+#
+
+---------------  S U M M A R Y ------------
+
+Command Line: org.jetbrains.kotlin.cli.jvm.K2JVMCompiler @E:\FinalYearProject\BreastCancerDetection\node_modules\@react-native-google-signin\google-signin\android\build\20240804_9407812627014350911.compiler.options
+
+Host: Intel(R) Core(TM) i5-7200U CPU @ 2.50GHz, 4 cores, 7G,  Windows 10 , 64 bit Build 19041 (10.0.19041.4717)
+Time: Sun Aug  4 20:11:28 2024 Pakistan Standard Time elapsed time: 0.081886 seconds (0d 0h 0m 0s)
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x000001c13bae4a70):  JavaThread "Unknown thread" [_thread_in_vm, id=14032, stack(0x0000009e14400000,0x0000009e14500000)]
+
+Stack: [0x0000009e14400000,0x0000009e14500000]
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+V  [jvm.dll+0x67d6e9]
+V  [jvm.dll+0x834dca]
+V  [jvm.dll+0x83688e]
+V  [jvm.dll+0x836ef3]
+V  [jvm.dll+0x247bdf]
+V  [jvm.dll+0x67a529]
+V  [jvm.dll+0x66ef9a]
+V  [jvm.dll+0x307a6b]
+V  [jvm.dll+0x30ef16]
+V  [jvm.dll+0x35ec3e]
+V  [jvm.dll+0x35ee6f]
+V  [jvm.dll+0x2de668]
+V  [jvm.dll+0x2df5d4]
+V  [jvm.dll+0x806661]
+V  [jvm.dll+0x36caf1]
+V  [jvm.dll+0x7e50f6]
+V  [jvm.dll+0x3f033f]
+V  [jvm.dll+0x3f1f71]
+C  [jli.dll+0x528f]
+C  [ucrtbase.dll+0x21bb2]
+C  [KERNEL32.DLL+0x17374]
+C  [ntdll.dll+0x4cc91]
+
+
+---------------  P R O C E S S  ---------------
+
+Threads class SMR info:
+_java_thread_list=0x00007ffea5f8ee98, length=0, elements={
+}
+
+Java Threads: ( => current thread )
+
+Other Threads:
+  0x000001c13bb3dc50 GCTaskThread "GC Thread#0" [stack: 0x0000009e14500000,0x0000009e14600000] [id=13488]
+  0x000001c13bb4dfe0 ConcurrentGCThread "G1 Main Marker" [stack: 0x0000009e14600000,0x0000009e14700000] [id=4072]
+  0x000001c13bb4ea00 ConcurrentGCThread "G1 Conc#0" [stack: 0x0000009e14700000,0x0000009e14800000] [id=464]
+
+[error occurred during error reporting (printing all threads), id 0xc0000005, EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x00007ffea574f0a7]
+
+VM state: not at safepoint (not fully initialized)
+
+VM Mutex/Monitor currently owned by a thread:  ([mutex/lock_event])
+[0x000001c13bae0ea0] Heap_lock - owner thread: 0x000001c13bae4a70
+
+Heap address: 0x0000000085e00000, size: 1954 MB, Compressed Oops mode: 32-bit
+
+CDS archive(s) mapped at: [0x0000000000000000-0x0000000000000000-0x0000000000000000), size 0, SharedBaseAddress: 0x0000000800000000, ArchiveRelocationMode: 1.
+Narrow klass base: 0x0000000000000000, Narrow klass shift: 0, Narrow klass range: 0x0
+
+GC Precious Log:
+<Empty>
+
+Heap:
+ garbage-first heap   total 0K, used 0K [0x0000000085e00000, 0x0000000100000000)
+  region size 1024K, 0 young (0K), 0 survivors (0K)
+
+[error occurred during error reporting (printing heap information), id 0xc0000005, EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x00007ffea5b37359]
+
+GC Heap History (0 events):
+No events
+
+Dll operation events (1 events):
+Event: 0.075 Loaded shared library C:\Program Files\OpenLogic\jdk-17.0.10.7-hotspot\bin\java.dll
+
+Deoptimization events (0 events):
+No events
+
+Classes unloaded (0 events):
+No events
+
+Classes redefined (0 events):
+No events
+
+Internal exceptions (0 events):
+No events
+
+VM Operations (0 events):
+No events
+
+Events (0 events):
+No events
+
+
+Dynamic libraries:
+0x00007ff6bf810000 - 0x00007ff6bf81e000 	C:\Program Files\OpenLogic\jdk-17.0.10.7-hotspot\bin\java.exe
+0x00007fff66870000 - 0x00007fff66a68000 	C:\Windows\SYSTEM32\ntdll.dll
+0x00007fff66400000 - 0x00007fff664c1000 	C:\Windows\System32\KERNEL32.DLL
+0x00007fff643a0000 - 0x00007fff6469d000 	C:\Windows\System32\KERNELBASE.dll
+0x00007fff642a0000 - 0x00007fff643a0000 	C:\Windows\System32\ucrtbase.dll
+0x00007fff4d440000 - 0x00007fff4d45b000 	C:\Program Files\OpenLogic\jdk-17.0.10.7-hotspot\bin\VCRUNTIME140.dll
+0x00007fff4d460000 - 0x00007fff4d477000 	C:\Program Files\OpenLogic\jdk-17.0.10.7-hotspot\bin\jli.dll
+0x00007fff65620000 - 0x00007fff657bd000 	C:\Windows\System32\USER32.dll
+0x00007fff64140000 - 0x00007fff64162000 	C:\Windows\System32\win32u.dll
+0x00007fff64c40000 - 0x00007fff64c6b000 	C:\Windows\System32\GDI32.dll
+0x00007fff64780000 - 0x00007fff64897000 	C:\Windows\System32\gdi32full.dll
+0x00007fff64170000 - 0x00007fff6420d000 	C:\Windows\System32\msvcp_win.dll
+0x00007fff50b40000 - 0x00007fff50dda000 	C:\Windows\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.19041.4355_none_60b8b9eb71f62e16\COMCTL32.dll
+0x00007fff64ba0000 - 0x00007fff64c3e000 	C:\Windows\System32\msvcrt.dll
+0x00007fff655f0000 - 0x00007fff6561f000 	C:\Windows\System32\IMM32.DLL
+0x00007fff4d430000 - 0x00007fff4d43c000 	C:\Program Files\OpenLogic\jdk-17.0.10.7-hotspot\bin\vcruntime140_1.dll
+0x00007fff31d40000 - 0x00007fff31dcd000 	C:\Program Files\OpenLogic\jdk-17.0.10.7-hotspot\bin\msvcp140.dll
+0x00007ffea5460000 - 0x00007ffea60c2000 	C:\Program Files\OpenLogic\jdk-17.0.10.7-hotspot\bin\server\jvm.dll
+0x00007fff65ab0000 - 0x00007fff65b60000 	C:\Windows\System32\ADVAPI32.dll
+0x00007fff64e30000 - 0x00007fff64ed0000 	C:\Windows\System32\sechost.dll
+0x00007fff65b60000 - 0x00007fff65c83000 	C:\Windows\System32\RPCRT4.dll
+0x00007fff64750000 - 0x00007fff64777000 	C:\Windows\System32\bcrypt.dll
+0x00007fff63d70000 - 0x00007fff63dbb000 	C:\Windows\SYSTEM32\POWRPROF.dll
+0x00007fff46be0000 - 0x00007fff46be9000 	C:\Windows\SYSTEM32\WSOCK32.dll
+0x00007fff64ed0000 - 0x00007fff64f3b000 	C:\Windows\System32\WS2_32.dll
+0x00007fff40310000 - 0x00007fff40337000 	C:\Windows\SYSTEM32\WINMM.dll
+0x00007fff5cf00000 - 0x00007fff5cf0a000 	C:\Windows\SYSTEM32\VERSION.dll
+0x00007fff63d50000 - 0x00007fff63d62000 	C:\Windows\SYSTEM32\UMPDC.dll
+0x00007fff626f0000 - 0x00007fff62702000 	C:\Windows\SYSTEM32\kernel.appcore.dll
+0x00007fff4d420000 - 0x00007fff4d42a000 	C:\Program Files\OpenLogic\jdk-17.0.10.7-hotspot\bin\jimage.dll
+0x00007fff61af0000 - 0x00007fff61cd4000 	C:\Windows\SYSTEM32\DBGHELP.DLL
+0x00007fff401d0000 - 0x00007fff40204000 	C:\Windows\SYSTEM32\dbgcore.DLL
+0x00007fff64210000 - 0x00007fff64292000 	C:\Windows\System32\bcryptPrimitives.dll
+0x00007fff46d80000 - 0x00007fff46da5000 	C:\Program Files\OpenLogic\jdk-17.0.10.7-hotspot\bin\java.dll
+
+dbghelp: loaded successfully - version: 4.0.5 - missing functions: none
+symbol engine: initialized successfully - sym options: 0x614 - pdb path: .;C:\Program Files\OpenLogic\jdk-17.0.10.7-hotspot\bin;C:\Windows\SYSTEM32;C:\Windows\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.19041.4355_none_60b8b9eb71f62e16;C:\Program Files\OpenLogic\jdk-17.0.10.7-hotspot\bin\server
+
+VM Arguments:
+java_command: org.jetbrains.kotlin.cli.jvm.K2JVMCompiler @E:\FinalYearProject\BreastCancerDetection\node_modules\@react-native-google-signin\google-signin\android\build\20240804_9407812627014350911.compiler.options
+java_class_path (initial): C:\Users\dell\.gradle\caches\modules-2\files-2.1\org.jetbrains.kotlin\kotlin-compiler-embeddable\1.9.22\9cd4dc7773cf2a99ecd961a88fbbc9a2da3fb5e1\kotlin-compiler-embeddable-1.9.22.jar;C:\Users\dell\.gradle\caches\modules-2\files-2.1\org.jetbrains.kotlin\kotlin-stdlib\1.9.22\d6c44cd08d8f3f9bece8101216dbe6553365c6e3\kotlin-stdlib-1.9.22.jar;C:\Users\dell\.gradle\caches\modules-2\files-2.1\org.jetbrains.kotlin\kotlin-script-runtime\1.9.22\f8139a46fc677ec9badc49ae954392f4f5e7e7c7\kotlin-script-runtime-1.9.22.jar;C:\Users\dell\.gradle\caches\modules-2\files-2.1\org.jetbrains.kotlin\kotlin-reflect\1.6.10\1cbe9c92c12a94eea200d23c2bbaedaf3daf5132\kotlin-reflect-1.6.10.jar;C:\Users\dell\.gradle\caches\modules-2\files-2.1\org.jetbrains.kotlin\kotlin-daemon-embeddable\1.9.22\20e2c5df715f3240c765cfc222530e2796542021\kotlin-daemon-embeddable-1.9.22.jar;C:\Users\dell\.gradle\caches\modules-2\files-2.1\org.jetbrains.intellij.deps\trove4j\1.0.20200330\3afb14d5f9ceb459d724e907a21145e8ff394f02\trove4j-1.0.20200330.jar;C:\Users\dell\.gradle\caches\modules-2\files-2.1\org.jetbrains\annotations\13.0\919f0dfe192fb4e063e7dacadee7f8bb9a2672a9\annotations-13.0.jar
+Launcher Type: SUN_STANDARD
+
+[Global flags]
+     intx CICompilerCount                          = 3                                         {product} {ergonomic}
+     uint ConcGCThreads                            = 1                                         {product} {ergonomic}
+     uint G1ConcRefinementThreads                  = 4                                         {product} {ergonomic}
+   size_t G1HeapRegionSize                         = 1048576                                   {product} {ergonomic}
+    uintx GCDrainStackTargetSize                   = 64                                        {product} {ergonomic}
+   size_t InitialHeapSize                          = 130023424                                 {product} {ergonomic}
+   size_t MarkStackSize                            = 4194304                                   {product} {ergonomic}
+   size_t MaxHeapSize                              = 2048917504                                {product} {ergonomic}
+   size_t MinHeapDeltaBytes                        = 1048576                                   {product} {ergonomic}
+   size_t MinHeapSize                              = 8388608                                   {product} {ergonomic}
+    uintx NonNMethodCodeHeapSize                   = 5832780                                {pd product} {ergonomic}
+    uintx NonProfiledCodeHeapSize                  = 122912730                              {pd product} {ergonomic}
+    uintx ProfiledCodeHeapSize                     = 122912730                              {pd product} {ergonomic}
+    uintx ReservedCodeCacheSize                    = 251658240                              {pd product} {ergonomic}
+     bool SegmentedCodeCache                       = true                                      {product} {ergonomic}
+   size_t SoftMaxHeapSize                          = 2048917504                             {manageable} {ergonomic}
+     bool UseCompressedClassPointers               = true                           {product lp64_product} {ergonomic}
+     bool UseCompressedOops                        = true                           {product lp64_product} {ergonomic}
+     bool UseG1GC                                  = true                                      {product} {ergonomic}
+     bool UseLargePagesIndividualAllocation        = false                                  {pd product} {ergonomic}
+
+Logging:
+Log output configuration:
+ #0: stdout all=warning uptime,level,tags
+ #1: stderr all=off uptime,level,tags
+
+Environment Variables:
+JAVA_HOME=C:\Program Files\OpenLogic\jdk-17.0.10.7-hotspot
+CLASSPATH=E:\FinalYearProject\BreastCancerDetection\android\\gradle\wrapper\gradle-wrapper.jar
+PATH=E:\FinalYearProject\BreastCancerDetection\node_modules\.bin;E:\FinalYearProject\BreastCancerDetection\node_modules\.bin;E:\FinalYearProject\node_modules\.bin;E:\node_modules\.bin;C:\Users\dell\AppData\Roaming\npm\node_modules\npm\node_modules\@npmcli\run-script\lib\node-gyp-bin;E:\FinalYearProject\BreastCancerDetection\node_modules\.bin;E:\FinalYearProject\BreastCancerDetection\node_modules\.bin;E:\FinalYearProject\node_modules\.bin;E:\node_modules\.bin;C:\Users\dell\AppData\Roaming\npm\node_modules\npm\node_modules\@npmcli\run-script\lib\node-gyp-bin;C:\Program Files\OpenLogic\jdk-17.0.10.7-hotspot\bin;C:\Program Files\Eclipse Adoptium\jdk-11.0.21.9-hotspot\bin;C:\Program Files\Microsoft\jdk-17.0.10.7-hotspot\bin;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Intel\Shared Files\fortran\bin\Intel64;C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64_win\mpirt;C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64_win\compiler;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\Microsoft SQL Server\110\Tools\Binn\;E:\Matlab1\runtime\win64;E:\Matlab1\bin;E:\Matlab1\polyspace\bin;C:\Program Files\dotnet\;C:\Users\dell\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Program Files\Git\cmd;C:\ProgramData\chocolatey\bin;C:\Users\dell\AppData\Local\Android\Sdk\platform-tools;C:\Users\dell\AppData\Local\Android\Sdk\platform-tools;C:\Program Files\OpenLogic\jdk-11.0.22.7-hotspot;C:\Program Files\OpenLogic\jdk-11.0.22.7-hotspot\bin;C:\Users\dell\AppData\Local\Android\Sdk\platform-tools;C:\Program Files\OpenLogic\jdk-11.0.22.7-hotspot;C:\Program Files\nodejs\;C:\Users\dell\AppData\Local\Programs\Python\Python312\Scripts\;C:\Users\dell\AppData\Local\Programs\Python\Python312\;C:\Users\dell\AppData\Local\Android\Sdk\tools;C:\Users\dell\AppData\Local\jdk-11.0.2\bin;C:\Users\dell\AppData\Local\Microsoft\Windo
+USERNAME=dell
+LANG=en_US.UTF-8
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 142 Stepping 9, GenuineIntel
+TMP=C:\Users\dell\AppData\Local\Temp
+TEMP=C:\Users\dell\AppData\Local\Temp
+
+
+
+Periodic native trim disabled
+
+
+---------------  S Y S T E M  ---------------
+
+OS:
+ Windows 10 , 64 bit Build 19041 (10.0.19041.4717)
+OS uptime: 0 days 8:54 hours
+Hyper-V role detected
+
+CPU: total 4 (initial active 4) (2 cores per cpu, 2 threads per core) family 6 model 142 stepping 9 microcode 0xca, cx8, cmov, fxsr, ht, mmx, 3dnowpref, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, lzcnt, tsc, tscinvbit, avx, avx2, aes, erms, clmul, bmi1, bmi2, adx, fma, vzeroupper, clflush, clflushopt, hv
+Processor Information for all 4 processors :
+  Max Mhz: 2701, Current Mhz: 2701, Mhz Limit: 2701
+
+Memory: 4k page, system-wide physical 7812M (651M free)
+TotalPageFile size 15773M (AvailPageFile size 38M)
+current process WorkingSet (physical memory assigned to process): 10M, peak: 10M
+current process commit charge ("private bytes"): 52M, peak: 175M
+
+vm_info: OpenJDK 64-Bit Server VM (17.0.10+7-adhoc..jdk17u) for windows-amd64 JRE (17.0.10+7-adhoc..jdk17u), built on Jan 24 2024 08:51:31 by "" with MS VC++ 16.10 / 16.11 (VS2019)
+
+END.
