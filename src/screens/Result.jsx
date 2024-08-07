@@ -1,51 +1,64 @@
+import React from 'react';
 import {
   View,
   Text,
   ScrollView,
-  TouchableOpacity,
-  StyleSheet,
   Image,
+  StyleSheet,
+  TouchableOpacity,
 } from 'react-native';
-import React from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
+import BottomNav from '../components/BottomNav';
 
 const Result = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const {images} = route.params;
+  const {images, result} = route.params;
 
   return (
-    <ScrollView>
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.navigate('Home')}>
-          <Text style={styles.buttonText}>&lt;</Text>
-        </TouchableOpacity>
-        <Text style={styles.headerText}>Result</Text>
-        <View style={styles.placeholder}></View>
-      </View>
+    <>
+      <ScrollView>
+        <View style={styles.header}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.navigate('Home')}>
+            <Text style={styles.buttonText}>&lt;</Text>
+          </TouchableOpacity>
+          <Text style={styles.headerText}>Result</Text>
+          <View style={styles.placeholder}></View>
+        </View>
 
-      <View style={styles.imgBox}>
-        {images.map((image, index) => (
-          <Image
-            key={index}
-            resizeMode="contain"
-            style={styles.img}
-            source={{uri: image.uri}}
-          />
-        ))}
-      </View>
+        <View style={styles.imgBox}>
+          {images.map((image, index) => (
+            <Image
+              key={index}
+              resizeMode="contain"
+              style={styles.img}
+              source={{uri: image.uri}}
+            />
+          ))}
+        </View>
 
-      <View style={styles.resultText}>
-        <Text style={{color: '#000', fontSize: 20}}>
-          <Text style={{fontWeight: 'bold'}}>Prediction:</Text> Cancer
-        </Text>
-        <Text style={{color: '#000', fontSize: 20}}>
-          <Text style={{fontWeight: 'bold'}}>Probability:</Text> 5%
-        </Text>
+        <View style={styles.resultText}>
+          <Text style={{color: '#000', fontSize: 20}}>
+            <Text style={{fontWeight: 'bold'}}>Prediction:</Text>{' '}
+            {result.result === 'Healthy' ? 'Healthy' : 'Cancer'}
+          </Text>
+          <Text style={{color: '#000', fontSize: 20}}>
+            <Text style={{fontWeight: 'bold'}}>Probability:</Text>{' '}
+            {(result.confidence * 100).toFixed(2)}%
+          </Text>
+          <Text style={{color: '#000', fontSize: 20}}>
+            <Text style={{fontWeight: 'bold'}}>Description:</Text>
+            {result.result === 'Healthy' ? result.future_risk : result.result}
+          </Text>
+        </View>
+      </ScrollView>
+
+      <View>
+        <BottomNav />
       </View>
-    </ScrollView>
+    </>
   );
 };
 
@@ -65,7 +78,6 @@ const styles = StyleSheet.create({
     height: 32,
     backgroundColor: '#fff',
     borderRadius: 20,
-    // fontSize:30,
   },
   buttonText: {
     fontSize: 22,
