@@ -9,74 +9,69 @@ import {
   ScrollView,
   SafeAreaView,
 } from 'react-native';
+import {useUser} from '../context/UserContext'; // Adjust path as needed
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
-import {useNavigation} from '@react-navigation/native';
 import {launchImageLibrary} from 'react-native-image-picker';
-import BottomNav from '../components/BottomNav';
+import BottomNav from '../components/BottomNav'; // Adjust path as needed
+import {useNavigation} from '@react-navigation/native'; // Import useNavigation
 
 const Account = () => {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
+  const {userData, updateUserData} = useUser();
   const [avatarUri, setAvatarUri] = useState(null);
-  const navigation = useNavigation();
+  const navigation = useNavigation(); // Use the hook to get navigation object
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const user = auth().currentUser;
-        if (user) {
-          const userDoc = await firestore()
-            .collection('users')
-            .doc(user.uid)
-            .get();
-          const userData = userDoc.data();
-          if (userData) {
-            setUsername(userData.fullName);
-            setEmail(userData.email);
-            if (userData.avatarUri) {
-              setAvatarUri(userData.avatarUri);
-            }
-          }
-        }
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-        Alert.alert('Error', 'Failed to fetch user data');
-      }
-    };
+    // Log userData to verify its structure
+    console.log('User Data:', userData);
 
-    fetchUserData();
-  }, []);
+    if (userData) {
+      setAvatarUri(userData.avatarUri);
+    }
+  }, [userData]);
 
   const handleSignOut = () => {
-    auth()
-      .signOut()
-      .then(() => {
-        navigation.navigate('SignIn');
-      })
-      .catch(error => {
-        console.error('Error signing out:', error);
-        Alert.alert('Error', 'Failed to sign out');
-      });
+    const currentUser = auth().currentUser;
+
+    if (currentUser) {
+      auth()
+        .signOut()
+        .then(() => {
+          navigation.navigate('SignIn');
+        })
+        .catch(error => {
+          console.error('Error signing out:', error);
+          Alert.alert('Error', 'Failed to sign out');
+        });
+    } else {
+      Alert.alert('Sign Out Error', 'No user currently signed in');
+    }
   };
 
   const handleAvatarPick = async () => {
     launchImageLibrary({mediaType: 'photo'}, async response => {
       if (response.didCancel) return;
-
       if (response.errorCode) {
         Alert.alert('Image Picker Error', response.errorMessage);
         return;
       }
 
-      const {uri, fileName} = response.assets[0];
+      const {uri} = response.assets[0];
+      const fileName =
+        response.assets[0].fileName || `avatar_${Date.now()}.jpg`;
 
       try {
-        const uploadUri = uri;
-        const uploadTask = storage()
-          .ref(`avatars/${fileName}`)
-          .putFile(uploadUri);
+        const uploadUri = uri.replace('file://', '');
+        const storageRef = storage().ref(
+          `avatars/${auth().currentUser.uid}/${fileName}`,
+        );
+        console.log(
+          'Uploading file to:',
+          `avatars/${auth().currentUser.uid}/${fileName}`,
+        );
+
+        const uploadTask = storageRef.putFile(uploadUri);
 
         uploadTask.on(
           'state_changed',
@@ -89,8 +84,9 @@ const Account = () => {
           },
           async () => {
             try {
-              const downloadURL =
-                await uploadTask.snapshot.ref.getDownloadURL();
+              const downloadURL = await storageRef.getDownloadURL();
+              console.log('Download URL:', downloadURL);
+
               await firestore()
                 .collection('users')
                 .doc(auth().currentUser.uid)
@@ -111,6 +107,9 @@ const Account = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Account</Text>
+      </View>
       <ScrollView contentContainerStyle={styles.scrollView}>
         <View style={styles.profileSection}>
           <TouchableOpacity onPress={handleAvatarPick}>
@@ -118,18 +117,28 @@ const Account = () => {
               source={
                 avatarUri
                   ? {uri: avatarUri}
-                  : require('../../images/default-avatar-profile.webp') // Add a default avatar image in your project
+                  : require('../../images/default-avatar-profile.webp')
               }
               style={styles.avatar}
             />
           </TouchableOpacity>
-          <Text style={styles.username}>{username}</Text>
-          <Text style={styles.email}>{email}</Text>
+          <View>
+            <Text style={styles.username}>
+              Name: {userData?.fullName || 'Loading...'}
+            </Text>
+            <Text style={styles.email}>
+              Email: {userData?.email || 'Loading...'}
+            </Text>
+          </View>
         </View>
-        <TouchableOpacity style={styles.button} onPress={handleSignOut}>
-          <Text style={styles.buttonText}>Sign Out</Text>
-        </TouchableOpacity>
+{/* 
+        <View>
+          <Text style={{color:"#000"}}>History</Text>
+        </View> */}
       </ScrollView>
+      <TouchableOpacity style={styles.button} onPress={handleSignOut}>
+        <Text style={styles.buttonText}>Sign Out</Text>
+      </TouchableOpacity>
       <BottomNav style={styles.bottomNav} />
     </SafeAreaView>
   );
@@ -143,11 +152,11 @@ const styles = StyleSheet.create({
   scrollView: {
     flexGrow: 1,
     padding: 20,
-    paddingBottom: 80, // Adjust padding to avoid overlap with BottomNav
   },
   profileSection: {
     alignItems: 'center',
     marginBottom: 30,
+    marginTop: 50,
   },
   avatar: {
     width: 120,
@@ -174,12 +183,33 @@ const styles = StyleSheet.create({
     color: '#777',
     marginBottom: 20,
   },
+  header: {
+    padding: 15,
+    backgroundColor: '#FB2A84',
+    borderBottomWidth: 1,
+    borderColor: '#ddd',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 1,
+  },
+  headerText: {
+    textAlign: 'center',
+    fontSize: 20,
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+  },
   button: {
+    position: 'absolute',
+    bottom: 120,
+    left: 20,
+    right: 20,
     padding: 15,
     backgroundColor: '#FB2A84',
     borderRadius: 5,
     alignItems: 'center',
-    marginTop: 10,
+    zIndex: 2,
   },
   buttonText: {
     color: '#fff',

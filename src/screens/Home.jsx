@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -52,6 +52,10 @@ const Home = () => {
       Alert.alert('No Images Selected', 'Please select images');
     }
   };
+
+  // useEffect(()=>{
+  //   handleCheckPress()
+  // }, [images])
 
   return (
     <View style={styles.container}>
@@ -137,7 +141,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FB2A84',
     padding: 10,
     borderRadius: 10,
-    paddingVertical:20,
+    paddingVertical: 14,
     width: '50%',
     alignItems: 'center',
     flexDirection: 'row', // To center the ActivityIndicator and Text
@@ -145,7 +149,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#fff',
-    fontSize: 30,
+    fontSize: 22,
     fontWeight: '600',
   },
   bottomNav: {
@@ -157,117 +161,3 @@ const styles = StyleSheet.create({
 });
 
 export default Home;
-
-// ---------------------
-
-// import React, {useState} from 'react';
-// import {
-//   StyleSheet,
-//   Text,
-//   View,
-//   TouchableOpacity,
-//   Alert,
-//   ScrollView,
-// } from 'react-native';
-// import OpenCamera from '../components/OpenCamera';
-// import {useNavigation} from '@react-navigation/native';
-
-// const Home = () => {
-//   const [images, setImages] = useState([]);
-//   const navigation = useNavigation();
-
-//   const handleUpdateImages = newImages => {
-//     setImages(newImages);
-//   };
-
-//   const handleCheckPress = async () => {
-//     if (images.length > 0) {
-//       try {
-//         const predictions = await sendImagesForPrediction(images);
-//         navigation.navigate('Result', {images, results: predictions});
-//       } catch (error) {
-//         Alert.alert('Error', 'Failed to get predictions');
-//       }
-//     } else {
-//       Alert.alert('No Images Selected', 'Please select images');
-//     }
-//   };
-
-//   const sendImagesForPrediction = async images => {
-//     const formData = new FormData();
-//     images.forEach((image, index) => {
-//       formData.append('files', {
-//         uri: image.uri,
-//         name: `image_${index}.jpg`,
-//         type: 'image/jpeg',
-//       });
-//     });
-
-//     try {
-//       const response = await fetch('http://127.0.0.1:8000/predict', {
-//         // Use 10.0.2.2 for Android emulator
-//         // Use your machine's IP address if running on a real device or different machine
-//         method: 'POST',
-//         body: formData,
-//       });
-//       if (!response.ok) {
-//         throw new Error(`HTTP error! status: ${response.status}`);
-//       }
-//       const result = await response.json();
-//       return result;
-//     } catch (error) {
-//       console.error('Error uploading image:', error);
-//       throw new Error('Failed to upload image');
-//     }
-//   };
-
-//   return (
-//     <>
-//       <View style={styles.header}>
-//         <Text style={styles.headerText}>Home</Text>
-//       </View>
-//       <ScrollView>
-//         <OpenCamera updateImages={handleUpdateImages} />
-//       </ScrollView>
-
-//       <View style={{justifyContent: 'center', alignItems: 'center'}}>
-//         <TouchableOpacity
-//           style={styles.bottomButton}
-//           onPress={handleCheckPress}>
-//           <Text style={styles.buttonText}>Check</Text>
-//         </TouchableOpacity>
-//       </View>
-//     </>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   header: {
-//     backgroundColor: '#FB2A84',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     paddingVertical: 10,
-//   },
-//   headerText: {
-//     fontSize: 20,
-//     color: '#fff',
-//     fontWeight: 'bold',
-//   },
-//   bottomButton: {
-//     position: 'absolute',
-//     bottom: 15,
-//     borderRadius: 10,
-//     width: '90%',
-//     backgroundColor: '#FB2A84',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     paddingVertical: 15,
-//   },
-//   buttonText: {
-//     fontSize: 20,
-//     color: '#fff',
-//     fontWeight: 'bold',
-//   },
-// });
-
-// export default Home;
