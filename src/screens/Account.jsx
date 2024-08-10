@@ -105,6 +105,10 @@ const Account = () => {
     });
   };
 
+  const handleNavigateToHistory = () => {
+    navigation.navigate('History');
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -124,17 +128,21 @@ const Account = () => {
           </TouchableOpacity>
           <View>
             <Text style={styles.username}>
-              Name: {userData?.fullName || 'Loading...'}
+              Name: {userData?.name || userData?.fullname || 'Loading...'}
             </Text>
             <Text style={styles.email}>
               Email: {userData?.email || 'Loading...'}
             </Text>
           </View>
         </View>
-{/* 
-        <View>
-          <Text style={{color:"#000"}}>History</Text>
-        </View> */}
+
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.checkButton}
+            onPress={handleNavigateToHistory}>
+            <Text style={styles.buttonText}>History</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
       <TouchableOpacity style={styles.button} onPress={handleSignOut}>
         <Text style={styles.buttonText}>Sign Out</Text>
@@ -158,6 +166,22 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     marginTop: 50,
   },
+  buttonContainer: {
+    alignItems: 'center',  // Center horizontally
+    marginVertical: 20,    // Add some vertical margin if needed
+  },
+  checkButton: {
+    backgroundColor: '#FB2A84',
+    paddingVertical: 15,
+    borderRadius: 10,
+    width: '100%', // Adjust width as needed
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '600',
+  },
   avatar: {
     width: 120,
     height: 120,
@@ -167,7 +191,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#ddd',
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
@@ -223,5 +247,6 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
 });
+
 
 export default Account;

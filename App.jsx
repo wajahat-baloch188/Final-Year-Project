@@ -13,6 +13,8 @@ import auth from '@react-native-firebase/auth';
 import CameraModal from './src/components/CameraModal';
 import {ImageProvider} from './src/context/imageContext';
 import {UserProvider} from './src/context/UserContext';
+import History from './src/screens/HistoryScreen';
+import {HistoryProvider} from './src/context/historyContext';
 
 const Stack = createStackNavigator();
 
@@ -55,49 +57,56 @@ const App = () => {
   }
 
   return (
-    <ImageProvider>
-      <UserProvider>
-        <NavigationContainer>
-          <Stack.Navigator initialRouteName={user ? 'Home' : 'SignIn'}>
-            <Stack.Screen
-              name="SignIn"
-              component={SignIn}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="Home"
-              component={Home}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="Account"
-              component={Account}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="SignUp"
-              component={SignUp}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="ForgetPassword"
-              component={ForgetPassword}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="Result"
-              component={Result}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="CameraModal"
-              component={CameraModal}
-              options={{headerShown: false}}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </UserProvider>
-    </ImageProvider>
+    <HistoryProvider>
+      <ImageProvider>
+        <UserProvider>
+          <NavigationContainer>
+            <Stack.Navigator initialRouteName={user ? 'Home' : 'SignIn'}>
+              <Stack.Screen
+                name="SignIn"
+                component={SignIn}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="Home"
+                component={Home}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="Account"
+                component={Account}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="SignUp"
+                component={SignUp}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="ForgetPassword"
+                component={ForgetPassword}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="Result"
+                component={Result}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="CameraModal"
+                component={CameraModal}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="History"
+                component={History}
+                options={{headerShown: false}}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </UserProvider>
+      </ImageProvider>
+    </HistoryProvider>
   );
 };
 
