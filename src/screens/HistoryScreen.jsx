@@ -20,47 +20,67 @@ const DEFAULT_IMAGE = require('../../images/img.png'); // Correct path to defaul
 const HistoryScreen = () => {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [authenticated, setAuthenticated] = useState(false);
+  const [userId, setUserId] = useState(null);
   const navigation = useNavigation();
 
+  // Check authentication state on mount
   useEffect(() => {
-    const fetchHistory = async () => {
-      try {
-        const userId = firebase.auth().currentUser.uid; // Ensure user is authenticated and get user ID
-        const snapshot = await firebase
-          .firestore()
-          .collection('users')
-          .doc(userId)
-          .collection('history')
-          .get();
-
-        const historyData = snapshot.docs.map(doc => ({
-          id: doc.id, // Include document ID
-          ...doc.data(),
-        }));
-        setHistory(historyData);
-      } catch (error) {
-        console.error('Error fetching history:', error);
-      } finally {
-        setLoading(false);
+    const unsubscribe = firebase.auth().onAuthStateChanged(user => {
+      console.log('Auth State Changed:', user); // Debug log to check the user object
+      if (user) {
+        setAuthenticated(true);
+        setUserId(user.uid);
+      } else {
+        setAuthenticated(false);
+        setUserId(null);
       }
-    };
+      setLoading(false);
+    });
 
-    fetchHistory();
+    return () => unsubscribe();
   }, []);
 
-  const handleDeleteHistoryItem = async id => {
+  const fetchHistory = async userId => {
+    if (!userId) return; // Prevent fetching if userId is not available
+
     try {
-      const userId = firebase.auth().currentUser.uid;
-      await firebase
+      const snapshot = await firebase
         .firestore()
         .collection('users')
         .doc(userId)
         .collection('history')
-        .doc(id)
-        .delete();
+        .get();
 
-      // Update local state to remove deleted item
-      setHistory(prevHistory => prevHistory.filter(item => item.id !== id));
+      const historyData = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setHistory(historyData);
+    } catch (error) {
+      console.error('Error fetching history:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (authenticated && userId) {
+      fetchHistory(userId);
+    }
+  }, [authenticated, userId]);
+
+  const handleDeleteHistoryItem = async id => {
+    try {
+      if (userId) {
+        await firebase
+          .firestore()
+          .collection('users')
+          .doc(userId)
+          .collection('history')
+          .doc(id)
+          .delete();
+
+        setHistory(prevHistory => prevHistory.filter(item => item.id !== id));
+      }
     } catch (error) {
       console.error('Error deleting history item:', error);
     }
@@ -68,22 +88,22 @@ const HistoryScreen = () => {
 
   const handleClearHistory = async () => {
     try {
-      const userId = firebase.auth().currentUser.uid;
-      await firebase
-        .firestore()
-        .collection('users')
-        .doc(userId)
-        .collection('history')
-        .get()
-        .then(snapshot => {
-          const batch = firebase.firestore().batch();
-          snapshot.docs.forEach(doc => {
-            batch.delete(doc.ref);
-          });
-          return batch.commit();
-        });
+      if (userId) {
+        const snapshot = await firebase
+          .firestore()
+          .collection('users')
+          .doc(userId)
+          .collection('history')
+          .get();
 
-      setHistory([]);
+        const batch = firebase.firestore().batch();
+        snapshot.docs.forEach(doc => {
+          batch.delete(doc.ref);
+        });
+        await batch.commit();
+
+        setHistory([]);
+      }
     } catch (error) {
       console.error('Error clearing history:', error);
     }
@@ -93,6 +113,16 @@ const HistoryScreen = () => {
     return (
       <View style={styles.loaderContainer}>
         <ActivityIndicator size="large" color="#FB2A84" />
+      </View>
+    );
+  }
+
+  if (!authenticated) {
+    return (
+      <View style={styles.noAuthContainer}>
+        <Text style={styles.noAuthText}>
+          You are not logged in. Please log in to view history.
+        </Text>
       </View>
     );
   }
@@ -144,7 +174,9 @@ const HistoryScreen = () => {
             <Text style={styles.noHistoryText}>No history available</Text>
           )}
         </ScrollView>
-        <TouchableOpacity style={styles.clearButton} onPress={handleClearHistory}>
+        <TouchableOpacity
+          style={styles.clearButton}
+          onPress={handleClearHistory}>
           <Text style={styles.clearButtonText}>Clear History</Text>
         </TouchableOpacity>
         <BottomNav />
@@ -226,8 +258,8 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     borderRadius: 5,
     alignItems: 'center',
-    alignSelf: 'center', // Centers the button horizontally
-    width: '90%', // Set width as a percentage to center horizontally
+    alignSelf: 'center',
+    width: '90%',
     marginBottom: 40,
   },
   clearButtonText: {
@@ -239,6 +271,15 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  noAuthContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  noAuthText: {
+    fontSize: 18,
+    color: '#888',
   },
 });
 
