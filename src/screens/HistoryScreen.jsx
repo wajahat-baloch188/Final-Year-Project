@@ -14,6 +14,7 @@ import '@react-native-firebase/auth';
 import '@react-native-firebase/storage';
 import {useNavigation} from '@react-navigation/native';
 import BottomNav from '../components/BottomNav';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const DEFAULT_IMAGE = require('../../images/img.png'); // Correct path to default image
 
@@ -147,10 +148,13 @@ const HistoryScreen = () => {
                   <Image
                     source={{uri: item.uri || DEFAULT_IMAGE}}
                     style={styles.historyImage}
-                    onError={() => {}}
+                    onError={err => {
+                      console.log(err);
+                    }}
                   />
                   <TouchableOpacity
-                    onPress={() => handleDeleteHistoryItem(item.id)}>
+                    onPress={() => handleDeleteHistoryItem(item.id)}
+                    style={{overflow: 'hidden'}}>
                     <Text style={styles.deleteText}>×</Text>
                   </TouchableOpacity>
                 </View>
@@ -188,7 +192,7 @@ const HistoryScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 15,
+    padding: '15 10',
     justifyContent: 'space-between',
   },
   header: {
@@ -211,10 +215,26 @@ const styles = StyleSheet.create({
   },
   historyItem: {
     padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-    marginBottom: 10,
+    shadowColor: '#ccc',
+    shadowOffset: { width: 1, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 9,
+    backgroundColor: '#fff', // Ensure background color is set
+    marginHorizontal: 10,
+    marginVertical: 10,
   },
+  
+  historyItem: {
+    padding: 15,
+    backgroundColor: '#fff', // Required for elevation to work
+    marginHorizontal: 10,
+    marginVertical: 10,
+    elevation: 20, // Adjust this value to change the shadow depth on Android
+    shadowColor: '#ccc', // This can be optional for Android
+  },
+
+  
+  
   backButton: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -242,6 +262,8 @@ const styles = StyleSheet.create({
     color: '#FB2A84',
     fontWeight: 'bold',
     fontSize: 32,
+ 
+  marginTop:-12,
   },
   historyText: {
     color: '#000',

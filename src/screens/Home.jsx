@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,16 +8,23 @@ import {
   Image,
   ActivityIndicator,
   ImageBackground,
+  Modal,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useImages } from '../context/imageContext';
 import BottomNav from '../components/BottomNav';
 import uploadImage from '../../images/upload-image.jpg';
+import CameraModal from '../components/CameraModal';
 
 const Home = () => {
   const { images, setImages } = useImages();
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
+  const [isModalVisible, setModalVisible] = useState(false);
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
 
   const handleCheckPress = async () => {
     if (images.length > 0) {
@@ -59,6 +66,12 @@ const Home = () => {
     setImages([]);
   };
 
+ useEffect(()=>{
+  if (images.length > 0) {
+    navigation.navigate("Home");
+  }
+ }, [images])
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -66,7 +79,7 @@ const Home = () => {
       </View>
 
       <View style={styles.content}>
-        <View style={styles.imageBox}>
+        <TouchableOpacity style={styles.imageBox} onPress={toggleModal}>
           {images.length === 0 ? (
             <ImageBackground
               source={uploadImage}
@@ -79,6 +92,7 @@ const Home = () => {
             <Image
               source={{ uri: images[0].uri }}
               style={styles.image}
+              resizeMode="contain"
             />
           )}
 
@@ -89,8 +103,11 @@ const Home = () => {
             >
               <Text style={styles.crossText}>×</Text>
             </TouchableOpacity>
-          )}
-        </View>
+          )
+          }
+        </TouchableOpacity>
+
+       
 
         <View style={styles.buttonContainer}>
           <TouchableOpacity
@@ -106,6 +123,21 @@ const Home = () => {
           </TouchableOpacity>
         </View>
       </View>
+
+      <Modal
+        transparent={true}
+        animationType="none"
+        visible={isModalVisible}
+        onRequestClose={toggleModal}
+      >
+        <CameraModal
+          isVisible={isModalVisible}
+          onClose={toggleModal}
+          onImageSelected={assets => {
+            console.log(assets); // Handle selected images
+          }}
+        />
+      </Modal>
 
       <BottomNav style={styles.bottomNav} />
     </View>
@@ -154,9 +186,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   image: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
+    width: '90%',
+    height: '90%',
+    resizeMode: 'contain', 
+    objectFit: 'center',
+    
   },
   placeholderText: {
     color: '#aaa',

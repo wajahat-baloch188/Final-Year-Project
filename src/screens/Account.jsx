@@ -19,33 +19,46 @@ import {useNavigation} from '@react-navigation/native'; // Import useNavigation
 
 const Account = () => {
   const {userData, updateUserData} = useUser();
-  const [avatarUri, setAvatarUri] = useState(null);
-  const navigation = useNavigation(); // Use the hook to get navigation object
+  const [avatarUri, setAvatarUri] = useState(userData?.avatarUri || null);
+  const navigation = useNavigation();
 
   useEffect(() => {
-    // Log userData to verify its structure
-    console.log('User Data:', userData);
+    const unsubscribe = auth().onAuthStateChanged(user => {
+      if (user) {
+        fetchUserData(user.uid);
+      } else {
+        // When user signs out, reset user data and navigate to SignIn screen
+        updateUserData(null);
+        navigation.navigate('SignIn');
+      }
+    });
 
-    if (userData) {
-      setAvatarUri(userData.avatarUri);
+    return () => unsubscribe(); // Cleanup subscription on unmount
+  }, [updateUserData, navigation]);
+
+  const fetchUserData = async uid => {
+    try {
+      const userDoc = await firestore().collection('users').doc(uid).get();
+      if (userDoc.exists) {
+        const data = userDoc.data();
+        setAvatarUri(data.avatarUri || null);
+        updateUserData(data);
+      } else {
+        console.log('No user document found');
+      }
+    } catch (error) {
+      console.error('Error fetching user data:', error);
     }
-  }, [userData]);
+  };
 
-  const handleSignOut = () => {
-    const currentUser = auth().currentUser;
-
-    if (currentUser) {
-      auth()
-        .signOut()
-        .then(() => {
-          navigation.navigate('SignIn');
-        })
-        .catch(error => {
-          console.error('Error signing out:', error);
-          Alert.alert('Error', 'Failed to sign out');
-        });
-    } else {
-      Alert.alert('Sign Out Error', 'No user currently signed in');
+  const handleSignOut = async () => {
+    try {
+      await auth().signOut();
+      updateUserData(null); // Clear user data
+      navigation.navigate('SignIn'); // Navigate to SignIn screen
+    } catch (error) {
+      console.error('Error signing out:', error);
+      Alert.alert('Error', 'Failed to sign out');
     }
   };
 
@@ -66,18 +79,12 @@ const Account = () => {
         const storageRef = storage().ref(
           `avatars/${auth().currentUser.uid}/${fileName}`,
         );
-        console.log(
-          'Uploading file to:',
-          `avatars/${auth().currentUser.uid}/${fileName}`,
-        );
 
         const uploadTask = storageRef.putFile(uploadUri);
 
         uploadTask.on(
           'state_changed',
-          snapshot => {
-            // Optional: handle progress
-          },
+          snapshot => {},
           error => {
             console.error('Upload Error:', error);
             Alert.alert('Upload Error', error.message);
@@ -85,13 +92,15 @@ const Account = () => {
           async () => {
             try {
               const downloadURL = await storageRef.getDownloadURL();
-              console.log('Download URL:', downloadURL);
-
               await firestore()
                 .collection('users')
                 .doc(auth().currentUser.uid)
                 .update({avatarUri: downloadURL});
               setAvatarUri(downloadURL);
+              updateUserData(prevData => ({
+                ...prevData,
+                avatarUri: downloadURL,
+              }));
             } catch (error) {
               console.error('Error updating user avatar URL:', error);
               Alert.alert('Error', 'Failed to update avatar');
@@ -128,7 +137,11 @@ const Account = () => {
           </TouchableOpacity>
           <View>
             <Text style={styles.username}>
-              Name: {userData?.name || userData?.fullname || 'Loading...'}
+              Name:{' '}
+              {userData?.name ||
+                userData?.fullName ||
+                userData?.displayName ||
+                'Loading...'}
             </Text>
             <Text style={styles.email}>
               Email: {userData?.email || 'Loading...'}
@@ -167,8 +180,8 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
   buttonContainer: {
-    alignItems: 'center',  // Center horizontally
-    marginVertical: 20,    // Add some vertical margin if needed
+    alignItems: 'center', // Center horizontally
+    marginVertical: 20, // Add some vertical margin if needed
   },
   checkButton: {
     backgroundColor: '#FB2A84',
@@ -191,7 +204,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#ddd',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
@@ -247,6 +260,5 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
 });
-
 
 export default Account;

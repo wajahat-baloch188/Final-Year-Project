@@ -11,24 +11,13 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        // Check AsyncStorage for existing user data
-        const storedData = await AsyncStorage.getItem('userData');
-        if (storedData) {
-          setUserData(JSON.parse(storedData));
-        } else {
-          // Fetch user data from Firestore if not in AsyncStorage
-          const user = auth().currentUser;
-          if (user) {
-            const userDoc = await firestore().collection('users').doc(user.uid).get();
-            if (userDoc.exists) {
-              const data = userDoc.data();
-              setUserData(data);
-              await AsyncStorage.setItem('userData', JSON.stringify(data));
-            } else {
-              console.log('No user document found');
-            }
-          } else {
-            console.log('No current user');
+        const user = auth().currentUser;
+        if (user) {
+          const userDoc = await firestore().collection('users').doc(user.uid).get();
+          if (userDoc.exists) {
+            const data = userDoc.data();
+            setUserData(data);
+            await AsyncStorage.setItem('userData', JSON.stringify(data));
           }
         }
       } catch (error) {
@@ -42,11 +31,10 @@ export const UserProvider = ({ children }) => {
   const updateUserData = async (newData) => {
     try {
       setUserData(newData);
-      await AsyncStorage.setItem('userData', JSON.stringify(newData));
-      // Optionally update Firestore as well
-      const user = auth().currentUser;
-      if (user) {
-        await firestore().collection('users').doc(user.uid).update(newData);
+      if (newData) {
+        await AsyncStorage.setItem('userData', JSON.stringify(newData));
+      } else {
+        await AsyncStorage.removeItem('userData');
       }
     } catch (error) {
       console.error('Error updating user data:', error);

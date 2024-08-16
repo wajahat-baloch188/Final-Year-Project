@@ -7221,10 +7221,10 @@ react-is@^17.0.1:
   resolved "https://registry.npmjs.org/react-is/-/react-is-17.0.2.tgz"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
 
-react-native-bootsplash@^6.0.0:
-  version "6.1.0"
-  resolved "https://registry.npmjs.org/react-native-bootsplash/-/react-native-bootsplash-6.1.0.tgz"
-  integrity sha512-jJgr/EfktnCBqcUadYE+OFr+UW0yXakObAPN+1GesCTywbyrZG8dcRBEZ81DJlTPnT+DYchY/e0+BviEhXDYIA==
+react-native-bootsplash@^6.1.1:
+  version "6.1.1"
+  resolved "https://registry.npmjs.org/react-native-bootsplash/-/react-native-bootsplash-6.1.1.tgz"
+  integrity sha512-1bdz2Br+CZpPbv9jHsGlwH27ionWsBQNU5uQr06Dxa91BJTZe/15Ac89ubCVl07/BRE7UcfaPzNdelvwpKcmgw==
   dependencies:
     "@expo/config-plugins" "^8.0.4"
     detect-indent "^6.1.0"
@@ -7294,7 +7294,7 @@ react-native-vector-icons@^10.1.0:
     prop-types "^15.7.2"
     yargs "^16.1.1"
 
-react-native@*, "react-native@^0.0.0-0 || >=0.60 <1.0", react-native@>=0.70.0, react-native@0.74.3:
+react-native@*, "react-native@^0.0.0-0 || >=0.60 <1.0", react-native@^0.74.3, react-native@>=0.70.0:
   version "0.74.3"
   resolved "https://registry.npmjs.org/react-native/-/react-native-0.74.3.tgz"
   integrity sha512-UFutCC6WEw6HkxlcpQ2BemKqi0JkwrgDchYB5Svi8Sp4Xwt4HA6LGEjNQgZ+3KM44bjyFRpofQym0uh0jACGng==
