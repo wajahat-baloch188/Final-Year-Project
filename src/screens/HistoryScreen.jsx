@@ -199,9 +199,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#FB2A84',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 12,
+    paddingVertical: 18,
     justifyContent: 'space-between',
     paddingHorizontal: 15,
+    elevation: 50, // For Android shadow
+    shadowColor: '#000', // Shadow color
+    shadowOffset: { width: 0, height: 5 }, // Shadow offset
+    shadowOpacity: 0.25, // Shadow opacity
+    shadowRadius: 10, // Shadow blur radius
+    marginBottom:20,
   },
   headerText: {
     fontSize: 20,
@@ -231,6 +237,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     elevation: 20, // Adjust this value to change the shadow depth on Android
     shadowColor: '#ccc', // This can be optional for Android
+    borderRadius:12,
   },
 
   

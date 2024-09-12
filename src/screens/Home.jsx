@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -9,15 +9,19 @@ import {
   ActivityIndicator,
   ImageBackground,
   Modal,
+  Dimensions,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { useImages } from '../context/imageContext';
+import {useNavigation} from '@react-navigation/native';
+import {useImages} from '../context/imageContext';
 import BottomNav from '../components/BottomNav';
 import uploadImage from '../../images/upload-image.jpg';
 import CameraModal from '../components/CameraModal';
+import CustomCarousel from '../components/Carousel';
+
+const {width, height} = Dimensions.get('window');
 
 const Home = () => {
-  const { images, setImages } = useImages();
+  const {images, setImages} = useImages();
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
@@ -40,7 +44,7 @@ const Home = () => {
         });
 
         const response = await fetch(
-          'https://1edb0715-fe6a-44a7-b0aa-fac0eb503fa7-00-28yl5ky0prdtx.pike.replit.dev:8000/predict',
+          'https://32d80ec7-58f9-4e88-bbf8-4e772abc3757-00-2ay7slnynws9q.sisko.replit.dev/predict',
           {
             method: 'POST',
             headers: {
@@ -52,7 +56,7 @@ const Home = () => {
 
         const result = await response.json();
         setLoading(false);
-        navigation.navigate('Result', { images, result });
+        navigation.navigate('Result', {images, result});
       } catch (error) {
         setLoading(false);
         Alert.alert('Error', 'Failed to get prediction');
@@ -66,16 +70,20 @@ const Home = () => {
     setImages([]);
   };
 
- useEffect(()=>{
-  if (images.length > 0) {
-    navigation.navigate("Home");
-  }
- }, [images])
+  useEffect(() => {
+    if (images.length > 0) {
+      navigation.navigate('Home');
+    }
+  }, [images]);
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Home</Text>
+      </View>
+
+      <View style={styles.carouselContainer}>
+        <CustomCarousel />
       </View>
 
       <View style={styles.content}>
@@ -84,13 +92,12 @@ const Home = () => {
             <ImageBackground
               source={uploadImage}
               style={styles.imageBackground}
-              imageStyle={styles.image}
-            >
+              imageStyle={styles.image}>
               <Text style={styles.placeholderText}>Upload Image</Text>
             </ImageBackground>
           ) : (
             <Image
-              source={{ uri: images[0].uri }}
+              source={{uri: images[0].uri}}
               style={styles.image}
               resizeMode="contain"
             />
@@ -99,22 +106,17 @@ const Home = () => {
           {images.length > 0 && (
             <TouchableOpacity
               style={styles.crossBtn}
-              onPress={handleClearImages}
-            >
+              onPress={handleClearImages}>
               <Text style={styles.crossText}>×</Text>
             </TouchableOpacity>
-          )
-          }
+          )}
         </TouchableOpacity>
-
-       
 
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.checkButton}
             onPress={handleCheckPress}
-            disabled={loading}
-          >
+            disabled={loading}>
             {loading ? (
               <ActivityIndicator size="small" color="#fff" />
             ) : (
@@ -128,8 +130,7 @@ const Home = () => {
         transparent={true}
         animationType="none"
         visible={isModalVisible}
-        onRequestClose={toggleModal}
-      >
+        onRequestClose={toggleModal}>
         <CameraModal
           isVisible={isModalVisible}
           onClose={toggleModal}
@@ -150,31 +151,39 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5F5F5',
   },
   header: {
-    paddingVertical: 15,
+    paddingVertical: height * 0.03,
     backgroundColor: '#FB2A84',
     borderBottomWidth: 1,
     borderColor: '#ddd',
     alignItems: 'center',
     justifyContent: 'center',
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
   },
   headerText: {
-    fontSize: 22,
+    fontSize: width * 0.06,
     fontWeight: 'bold',
     color: '#fff',
+  },
+  carouselContainer: {
+    height: height * 0.2,
   },
   content: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: width * 0.05,
   },
   imageBox: {
     width: '100%',
-    height: 250,
+    height: height * 0.25,
     borderRadius: 20,
     overflow: 'hidden',
-    marginVertical: 20,
-    elevation: 8,
+    marginVertical: height * 0.02,
+    elevation: 5,
     backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center',
@@ -184,19 +193,19 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    width: '100%',
+    height: '100%',
   },
   image: {
-    width: '90%',
+    width: '100%',
     height: '90%',
-    resizeMode: 'contain', 
-    objectFit: 'center',
-    
+    resizeMode: 'contain',
   },
   placeholderText: {
     color: '#aaa',
-    fontSize: 18,
+    fontSize: width * 0.04,
     fontWeight: 'bold',
-    backgroundColor: 'rgba(0, 0, 0, 0.3)', // Semi-transparent background for better text visibility
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
     padding: 10,
     borderRadius: 5,
   },
@@ -206,27 +215,28 @@ const styles = StyleSheet.create({
     right: 10,
     backgroundColor: '#FB2A84',
     borderRadius: 20,
-    paddingHorizontal: 10,
+    paddingHorizontal: 8,
   },
   crossText: {
     color: '#fff',
-    fontSize: 24,
+    fontSize: width * 0.06,
+    marginTop:-2,
   },
   buttonContainer: {
     width: '100%',
-    alignItems: 'center', // Center horizontally
-    marginVertical: 20,
+    alignItems: 'center',
+    marginVertical: height * 0.02,
   },
   checkButton: {
     backgroundColor: '#FB2A84',
-    paddingVertical: 15,
+    paddingVertical: height * 0.02,
     borderRadius: 10,
-    width: '80%', // Adjust width as needed
+    width: '80%',
     alignItems: 'center',
   },
   buttonText: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: width * 0.045,
     fontWeight: '600',
   },
   bottomNav: {
