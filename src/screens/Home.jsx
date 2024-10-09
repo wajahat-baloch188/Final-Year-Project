@@ -44,7 +44,7 @@ const Home = () => {
         });
 
         const response = await fetch(
-          'https://32d80ec7-58f9-4e88-bbf8-4e772abc3757-00-2ay7slnynws9q.sisko.replit.dev/predict',
+          'https://029b74c7-0ce2-43df-9c11-4f168103f222-00-21vq5jopmzgzd.sisko.replit.dev/predict',
           {
             method: 'POST',
             headers: {
@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
   crossText: {
     color: '#fff',
     fontSize: width * 0.06,
-    marginTop:-2,
+    marginTop: -2,
   },
   buttonContainer: {
     width: '100%',

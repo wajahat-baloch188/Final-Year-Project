@@ -159,18 +159,18 @@ const HistoryScreen = () => {
                   </TouchableOpacity>
                 </View>
                 <Text style={styles.historyText}>
-                  Prediction: {item.result || 'Unknown'}
+                  <Text style={{fontWeight: 'bold'}}>Prediction: </Text>{item.result || 'Unknown'}
                 </Text>
                 <Text style={styles.historyText}>
-                  Confidence: {(item.confidence || 0) * 100}%
+                  <Text style={{fontWeight: 'bold'}}>Probability:</Text> {(item.confidence || 0).toFixed(2)}%
                 </Text>
                 {item.result === 'Healthy' && (
                   <Text style={styles.historyText}>
-                    Future Risk: {item.future_risk || 'N/A'}
+                  <Text style={{fontWeight: 'bold'}}>Future Risk:</Text> {item.future_risk || 'N/A'}
                   </Text>
                 )}
                 <Text style={styles.historyText}>
-                  Date: {item.date || 'No date available'}
+                <Text style={{fontWeight: 'bold'}}>Date:</Text> {item.date || 'No date available'}
                 </Text>
               </View>
             ))

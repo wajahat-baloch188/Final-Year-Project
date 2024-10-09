@@ -63,10 +63,10 @@ const Result = () => {
           </Text>
           <Text style={{ color: '#000', fontSize: 20 }}>
             <Text style={{ fontWeight: 'bold' }}>Probability:</Text>{' '}
-            {(result.confidence * 100).toFixed(2)}%
+            {(result.confidence).toFixed(2)}%
           </Text>
           <Text style={{ color: '#000', fontSize: 20 }}>
-            <Text style={{ fontWeight: 'bold' }}>Description:</Text>
+            <Text style={{ fontWeight: 'bold' }}>Future Risk:</Text>
             {result.result === 'Healthy' ? result.future_risk : result.result}
           </Text>
         </View>
